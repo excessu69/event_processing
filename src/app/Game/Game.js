@@ -88,10 +88,10 @@ export default class Game {
 
   updateStats() {
     if (this.scoreElement) {
-      this.scoreElement.textContent = `${this.score}`;
+      this.scoreElement.textContent = `Попадания: ${this.score}`;
     }
     if (this.livesElement) {
-      this.livesElement.textContent = ` ${this.missed} / ${this.maxMissed}`;
+      this.livesElement.textContent = `Промахи: ${this.missed} / ${this.maxMissed}`;
     }
   }
 
