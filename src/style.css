@@ -1,0 +1,33 @@
+@import "./app/Game/Game.css";
+@import "./app/Board/Board.css";
+@import "./app/Goblin/Goblin.css";
+@import "./app/Hammer/Hammer.css";
+
+body {
+  margin: 0;
+  background: #eee;
+  font-family: sans-serif;
+}
+
+#root {
+  display: flex;
+  justify-content: center;
+  margin-top: 50px;
+}
+
+.stats {
+  display: flex;
+  justify-content: space-between;
+  width: 320px;
+  margin: 20px auto;
+  font-size: 22px;
+  font-weight: bold;
+}
+
+.stat-score {
+  color: green;
+}
+
+.stat-missed {
+  color: red;
+}

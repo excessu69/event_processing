@@ -1,0 +1,14 @@
+.board {
+  display: grid;
+  grid-template-columns: repeat(4, 100px);
+  gap: 10px;
+}
+
+.cell {
+  width: 100px;
+  height: 100px;
+  background: #ccc;
+  border-radius: 8px;
+  position: relative;
+  overflow: hidden;
+}
