@@ -23,6 +23,8 @@ export default class Game {
     this.scoreElement = document.getElementById("score");
     this.livesElement = document.getElementById("lives");
 
+    this.messageBox = document.getElementById("game-message");
+
     this.handleVisibilityChange = this.handleVisibilityChange.bind(this);
     this.handleBeforeUnload = this.handleBeforeUnload.bind(this);
   }
@@ -42,16 +44,6 @@ export default class Game {
     window.addEventListener("beforeunload", this.handleBeforeUnload);
   }
 
-  handleVisibilityChange() {
-    if (document.hidden) {
-      this.stopGame("Игра была приостановлена (вы ушли со страницы)");
-    }
-  }
-
-  handleBeforeUnload() {
-    this.stopGame("Игра остановлена (закрытие страницы)");
-  }
-
   start() {
     this.interval = setInterval(() => {
       this.moveGoblin();
@@ -59,13 +51,24 @@ export default class Game {
   }
 
   moveGoblin() {
-    const cell = this.board.getRandomCell(this.goblin.currentCell);
-    this.goblin.appear(cell);
+    if (this.goblin.isVisible) {
+      this.missed++;
+      this.updateStats();
+
+      if (this.missed >= this.maxMissed) {
+        this.end("Вы проиграли 😢");
+        return;
+      }
+    }
+
+    const prevCell = this.goblin.currentCell;
+    const newCell = this.board.getRandomCell(prevCell);
+    this.goblin.appear(newCell);
   }
 
   addClickHandler() {
     this.root.addEventListener("click", (event) => {
-      this.hammer.show(event.clientX, event.clientY);
+      this.hammer.hit();
 
       if (event.target.classList.contains("goblin")) {
         this.score++;
@@ -95,22 +98,51 @@ export default class Game {
     }
   }
 
-  stopGame(message) {
+  stop() {
     clearInterval(this.interval);
     this.interval = null;
-    document.removeEventListener(
-      "visibilitychange",
-      this.handleVisibilityChange,
-    );
-    window.removeEventListener("beforeunload", this.handleBeforeUnload);
-
-    if (message) {
-      alert(message + `\nВаш счёт: ${this.score}`);
-    }
   }
 
   end(message) {
-    clearInterval(this.interval);
-    alert(`${message}\nВаш итоговый счёт: ${this.score}`);
+    this.stop();
+
+    this.showMessage(message);
+  }
+
+  showMessage(text) {
+    this.messageBox.innerHTML = `
+      <div class="message-text">${text}<br>Счёт: ${this.score}</div>
+      <button id="restart-btn" class="restart-btn">Играть снова</button>
+    `;
+
+    document.getElementById("restart-btn").addEventListener("click", () => {
+      this.restart();
+    });
+  }
+
+  restart() {
+    // сбрасываем
+    this.score = 0;
+    this.missed = 0;
+    this.updateStats();
+
+    this.messageBox.innerHTML = "";
+
+    // прячем гоблина если завис
+    this.goblin.hide();
+
+    // стартуем заново
+    this.start();
+  }
+
+  handleVisibilityChange() {
+    if (document.hidden) {
+      this.stop();
+      this.showMessage("Игра приостановлена (вы ушли со страницы)");
+    }
+  }
+
+  handleBeforeUnload() {
+    this.stop();
   }
 }

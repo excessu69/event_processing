@@ -1,5 +1,3 @@
-import "./Hammer.css";
-
 export default class Hammer {
   constructor(src) {
     this.src = src;
@@ -9,23 +7,25 @@ export default class Hammer {
   init(root) {
     this.element = document.createElement("img");
     this.element.src = this.src;
+    this.element.alt = "Hammer";
     this.element.classList.add("hammer");
     root.append(this.element);
-    this.hide();
+
+    root.addEventListener("mousemove", (e) => {
+      this.element.style.left = `${e.clientX}px`;
+      this.element.style.top = `${e.clientY}px`;
+    });
   }
 
-  show(x, y) {
+  hit() {
     if (!this.element) return;
 
-    this.element.style.left = `${x - 10}px`;
-    this.element.style.top = `${y - 10}px`;
-    this.element.classList.add("show");
+    this.element.style.transform =
+      "translate(-50%, -50%) rotate(-90deg) scale(1.2)";
 
-    setTimeout(() => this.hide(), 200);
-  }
-
-  hide() {
-    if (!this.element) return;
-    this.element.classList.remove("show");
+    setTimeout(() => {
+      this.element.style.transform =
+        "translate(-50%, -50%) rotate(-45deg) scale(1)";
+    }, 150);
   }
 }

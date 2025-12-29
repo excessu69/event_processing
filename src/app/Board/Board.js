@@ -13,20 +13,20 @@ export default class Board {
     for (let i = 0; i < total; i++) {
       const cell = document.createElement("div");
       cell.classList.add("cell");
-      board.appendChild(cell);
+      board.append(cell);
       this.cells.push(cell);
     }
 
     return board;
   }
 
-  getRandomCell(prev = null) {
-    let random;
-
+  getRandomCell(excludeCell = null) {
+    let cell;
     do {
-      random = this.cells[Math.floor(Math.random() * this.cells.length)];
-    } while (random === prev);
+      const index = Math.floor(Math.random() * this.cells.length);
+      cell = this.cells[index];
+    } while (cell === excludeCell);
 
-    return random;
+    return cell;
   }
 }
