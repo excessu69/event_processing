@@ -11,20 +11,20 @@ export default class Goblin {
   }
 
   appear(cell) {
-    if (this.currentCell) this.hide();
+    this.element.remove();
 
     cell.append(this.element);
     this.currentCell = cell;
     this.isVisible = true;
+
+    this.element.classList.remove("goblin-appear");
+    void this.element.offsetWidth;
+    this.element.classList.add("goblin-appear");
   }
 
   hide() {
-    if (this.currentCell) {
-      if (this.element.parentNode === this.currentCell) {
-        this.currentCell.removeChild(this.element);
-      }
-      this.currentCell = null;
-    }
+    this.element.remove();
+    this.currentCell = null;
     this.isVisible = false;
   }
 }

@@ -19,6 +19,7 @@ export default class Game {
     this.maxMissed = 5;
 
     this.interval = null;
+    this.lastCell = null;
 
     this.scoreElement = document.getElementById("score");
     this.livesElement = document.getElementById("lives");
@@ -64,6 +65,8 @@ export default class Game {
     const prevCell = this.goblin.currentCell;
     const newCell = this.board.getRandomCell(prevCell);
     this.goblin.appear(newCell);
+
+    this.lastCell = newCell;
   }
 
   addClickHandler() {
@@ -78,13 +81,15 @@ export default class Game {
         if (this.score >= this.maxScore) {
           this.end("Вы выиграли! 🎉");
         }
-      } else {
-        this.missed++;
-        this.updateStats();
 
-        if (this.missed >= this.maxMissed) {
-          this.end("Вы проиграли 😢");
-        }
+        return;
+      }
+
+      this.missed++;
+      this.updateStats();
+
+      if (this.missed >= this.maxMissed) {
+        this.end("Вы проиграли 😢");
       }
     });
   }
@@ -121,17 +126,14 @@ export default class Game {
   }
 
   restart() {
-    // сбрасываем
     this.score = 0;
     this.missed = 0;
     this.updateStats();
 
     this.messageBox.innerHTML = "";
 
-    // прячем гоблина если завис
     this.goblin.hide();
 
-    // стартуем заново
     this.start();
   }
 

@@ -5,7 +5,6 @@ import Board from "../src/app/Board/Board.js";
 import Goblin from "../src/app/Goblin/Goblin.js";
 import Hammer from "../src/app/Hammer/Hammer.js";
 
-// Мокаем классы, чтобы не было лишнего DOM
 jest.mock("../src/app/Board/Board.js");
 jest.mock("../src/app/Goblin/Goblin.js");
 jest.mock("../src/app/Hammer/Hammer.js");
