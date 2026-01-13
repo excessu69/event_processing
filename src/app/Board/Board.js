@@ -22,10 +22,23 @@ export default class Board {
 
   getRandomCell(excludeCell = null) {
     let cell;
+    let index;
+    let duplicateOccurred = false;
+
     do {
-      const index = Math.floor(Math.random() * this.cells.length);
+      index = Math.floor(Math.random() * this.cells.length);
       cell = this.cells[index];
+
+      if (cell === excludeCell) {
+        duplicateOccurred = true;
+      }
     } while (cell === excludeCell);
+
+    console.log(
+      "Board.getRandomCell ->",
+      index,
+      duplicateOccurred ? "(duplicate)" : "(unique)",
+    );
 
     return cell;
   }

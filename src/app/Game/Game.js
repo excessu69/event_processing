@@ -62,7 +62,7 @@ export default class Game {
       }
     }
 
-    const prevCell = this.goblin.currentCell;
+    const prevCell = this.goblin.currentCell || this.lastCell;
     const newCell = this.board.getRandomCell(prevCell);
     this.goblin.appear(newCell);
 

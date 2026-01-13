@@ -73,4 +73,27 @@ describe("Game", () => {
 
     expect(document.getElementById("game-message").innerHTML).toBe("");
   });
+
+  test("moveGoblin передаёт lastCell, если текущая ячейка goblin равна null (после попадания)", () => {
+    const mockPrev = document.createElement("div");
+    game.board.getRandomCell = jest.fn(() => document.createElement("div"));
+
+    game.lastCell = mockPrev;
+    game.goblin.currentCell = null;
+
+    game.moveGoblin();
+
+    expect(game.board.getRandomCell).toHaveBeenCalledWith(mockPrev);
+  });
+
+  test("moveGoblin передаёт текущую ячейку goblin, если она существует", () => {
+    const goblinCell = document.createElement("div");
+    game.board.getRandomCell = jest.fn(() => document.createElement("div"));
+
+    game.goblin.currentCell = goblinCell;
+
+    game.moveGoblin();
+
+    expect(game.board.getRandomCell).toHaveBeenCalledWith(goblinCell);
+  });
 });
